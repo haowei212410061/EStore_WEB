@@ -32,7 +32,7 @@ const UserMutationTypeDefs = gql`
     UserSignUp(
       userid: String!
       account: String!
-      email: String
+      email: String!
       password: String!
       phone: String!
     ): UserResponse

@@ -21,7 +21,7 @@ export const UserMutationResolves = {
           return {
             status: 200,
             message: "SignUp success",
-            data: SignUpResponse.rows[0],
+            data: SignUpResponse.rows,
           };
         } else {
           return {
