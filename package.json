@@ -12,19 +12,27 @@
     "@apollo/client": "^3.13.8",
     "@as-integrations/next": "^3.2.0",
     "@graphql-tools/merge": "^9.0.24",
+    "@radix-ui/react-avatar": "^1.1.9",
+    "@radix-ui/react-navigation-menu": "^1.2.12",
     "@supabase/supabase-js": "^2.49.4",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "dotenv": "^16.5.0",
     "graphql": "^16.11.0",
     "graphql-tag": "^2.12.6",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
+    "lucide-react": "^0.510.0",
     "next": "15.3.1",
     "pg": "^8.15.6",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-use": "^17.6.0",
+    "tailwind-merge": "^3.3.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4"
+    "tailwindcss": "^4.1.6",
+    "tw-animate-css": "^1.2.9"
   }
 }
