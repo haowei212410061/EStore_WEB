@@ -19,8 +19,8 @@ export default async function Home() {
         </h2>
         <ProductList
           productData={Products.filter(
-            (product) => product.category === "men's clothing"
-          )}
+            (product) => product.category === "mens clothing"
+          ).slice(0,4)}
         />
       </div>
 

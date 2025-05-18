@@ -34,3 +34,21 @@ export const GET_ALL_ORDER = `
     }
   }
 `;
+
+export const GET_ALL_PRODUCT_WITH_CATEGORY = `
+query GetProductWithCategory($column: String!, $info: String) {
+  GetProductWithCategory(column: $column, info: $info) {
+    status
+    message
+    data {
+      category
+      count
+      description
+      image
+      price
+      productid
+      title
+    }
+  }
+}
+`

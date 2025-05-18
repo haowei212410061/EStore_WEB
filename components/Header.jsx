@@ -31,7 +31,7 @@ export function Header() {
           <AvatarImage src={logo.src} alt="Estore Logo" />
         </Avatar>
         <nav className="hidden md:flex space-x-6 text-lg font-medium text-gray-800">
-          <Link href="/" className="hover:text-blue-500">
+          <Link href="/Home" className="hover:text-blue-500">
             Home
           </Link>
           <Link href="/MenClothes" className="hover:text-blue-500">

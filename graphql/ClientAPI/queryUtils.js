@@ -1,4 +1,8 @@
-import { GET_ALL_ORDER, GET_ALL_PRODUCT } from "./query";
+import {
+  GET_ALL_ORDER,
+  GET_ALL_PRODUCT,
+  GET_ALL_PRODUCT_WITH_CATEGORY,
+} from "./query";
 const devUrl = "http://localhost:3000/api/graphql";
 
 /**
@@ -77,6 +81,23 @@ export async function FetchAllOrder(userid) {
     return response;
   } catch (error) {
     console.error(`Fail to get all order: ${error.graphQLErrors}`);
+    throw error;
+  }
+}
+
+export async function FetchProductWithCategory(variable) {
+  try {
+    const response = await FetchAPIWithVariables(
+      devUrl,
+      GET_ALL_PRODUCT_WITH_CATEGORY,
+      variable
+    );
+    const { data } = response.data.GetProductWithCategory;
+    return data;
+  } catch (error) {
+    console.error(
+      `Fail to get all product with ${variable.column}: ${error.graphQLErrors}`
+    );
     throw error;
   }
 }
