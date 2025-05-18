@@ -23,7 +23,7 @@ export function Header() {
       className="flex items-center justify-between w-full h-24 bg-white px-6 z-50 "
       style={{
         position: isScroll ? "fixed" : "relative",
-        top: isScroll ? 0 : 0,
+        top: 0,
       }}
     >
       <div className="flex items-center space-x-8">

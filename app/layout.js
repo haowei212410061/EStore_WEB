@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { Inter } from "next/font/google";
 import { Poppins } from "next/font/google";
+import ApolloClientProvider from "@/components/ApolloClientProvider";
 const poppins = Poppins({
   subsets: ["latin"],
   variable: "--font-poppins",
@@ -8,7 +9,7 @@ const poppins = Poppins({
 });
 import "./globals.css";
 
-const inter = Inter({subsets:["latin"]})
+const inter = Inter({ subsets: ["latin"] });
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -27,10 +28,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${poppins.className} font-sans antialiased`}
-      >
-        {children}
+      <body className={`${poppins.className} font-sans antialiased`}>
+        <ApolloClientProvider>{children}</ApolloClientProvider>
       </body>
     </html>
   );

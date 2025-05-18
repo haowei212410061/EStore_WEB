@@ -45,9 +45,10 @@ export const UserQueryResolves = {
           data: GetAllProductResponse.rows,
         };
       } catch (error) {
+        console.log(error)
         return {
-          status: 404,
-          message: `fail to get all product : ${error}`,
+          status: 500,
+          message: "Internal server error while getting all products",
           data: [],
         };
       }
@@ -59,11 +60,11 @@ export const UserQueryResolves = {
           `SELECT * FROM products WHERE ${column}=$1`,
           [info]
         );
-        return{
-            status:200,
-            message:"Get products success",
-            data:ProductResponse.rows
-        }
+        return {
+          status: 200,
+          message: "Get products success",
+          data: ProductResponse.rows,
+        };
       } catch (error) {
         console.error(`Fail to get product with category: ${error}`);
       }
@@ -117,29 +118,35 @@ export const UserQueryResolves = {
       }
     },
 
-    GetAllOrder:async(parent,{userid},{db})=>{
-        try{
-            const OrderResponse = await db.query(`SELECT * FROM orders WHERE userid=$1`,[userid])
-            return{
-                status:200,
-                message:"Get all order success",
-                data:OrderResponse.rows
-            }
-        }catch(error){
-            console.error(`Fail to get all order:${error}`)
-        }
+    GetAllOrder: async (parent, { userid }, { db }) => {
+      try {
+        const OrderResponse = await db.query(
+          `SELECT * FROM orders WHERE userid=$1`,
+          [userid]
+        );
+        return {
+          status: 200,
+          message: "Get all order success",
+          data: OrderResponse.rows,
+        };
+      } catch (error) {
+        console.error(`Fail to get all order:${error}`);
+      }
     },
-    GetOrderWithOrderId:async(parent,{userid,orderid},{db})=>{
-        try{
-            const OrderResponse = await db.query(`SELECT * FROM orders WHERE userid=$1 AND orderid=$2`,[userid,orderid])
-            return{
-                status:200,
-                message:"Get order success",
-                data:OrderResponse.rows
-            }
-        }catch(error){
-            console.error(`Fail to get order:${error}`)
-        }
-    }
+    GetOrderWithOrderId: async (parent, { userid, orderid }, { db }) => {
+      try {
+        const OrderResponse = await db.query(
+          `SELECT * FROM orders WHERE userid=$1 AND orderid=$2`,
+          [userid, orderid]
+        );
+        return {
+          status: 200,
+          message: "Get order success",
+          data: OrderResponse.rows,
+        };
+      } catch (error) {
+        console.error(`Fail to get order:${error}`);
+      }
+    },
   },
 };
