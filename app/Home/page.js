@@ -4,6 +4,7 @@ import { AboutUsContent, ContactUs, BrandContent } from "@/lib/LocalData";
 import ProductList from "@/components/CardList";
 import AboutCard from "@/components/AboutCard";
 import { FetchAllProduct } from "@/graphql/ClientAPI/queryUtils";
+import Footer from "@/components/footer";
 
 export default async function Home() {
   const Products = await FetchAllProduct();
@@ -35,6 +36,8 @@ export default async function Home() {
           <AboutCard title={"Brand Concept"} content={BrandContent} />
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }

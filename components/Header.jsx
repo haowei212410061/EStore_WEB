@@ -9,6 +9,7 @@ import { useWindowScroll } from "react-use";
 
 export function Header() {
   const [isScroll, setIsScroll] = useState(false);
+  const [isOpenDropDownMenu, SetIsOpenDropDownMenu] = useState(false);
 
   const { y } = useWindowScroll();
   useEffect(() => {
@@ -58,10 +59,41 @@ export function Header() {
         <button
           aria-label="User Profile"
           className="p-2 text-gray-700 hover:text-blue-600"
+          onClick={() => {
+            console.log(isOpenDropDownMenu);
+            SetIsOpenDropDownMenu(!isOpenDropDownMenu);
+          }}
         >
           <User className="w-6 h-6" />
         </button>
       </div>
+      {/* Dropdown Menu */}
+      {isOpenDropDownMenu && (
+        <div className="fixed right-10 top-16 z-100 mt-2 w-40 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+          <div className="py-1">
+            <a
+              href="/orders"
+              className="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-100"
+            >
+              訂單查詢
+            </a>
+            <div className="border-t" />
+            <Link
+              href="/profile"
+              className="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-100"
+            >
+              個人資料
+            </Link>
+            <div className="border-t" />
+            <Link
+              href="/"
+              className="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-100"
+            >
+              登出
+            </Link>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

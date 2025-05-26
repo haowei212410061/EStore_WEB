@@ -14,7 +14,8 @@ const nextConfig = {
       "www2.hm.com",
       "static.nike.com",
       "lsco.scene7.com",
-      "www.gap.com"
+      "www.gap.com",
+      "wrihsxmyaxruvffboqto.supabase.co"
     ],
   },
 };

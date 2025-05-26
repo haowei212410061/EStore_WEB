@@ -1,30 +1,33 @@
-"use client"
+"use client";
 
 import { FetchAllProduct } from "@/graphql/ClientAPI/queryUtils";
 import { LinkedinIcon, InstagramIcon, FacebookIcon, User } from "lucide-react";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
-  const [account,setAccount] = useState('')
-  const [password,setPassword] = useState('')
+  const router = useRouter();
+  const [account, setAccount] = useState("");
+  const [password, setPassword] = useState("");
 
-
+  function VerifyUser() {
+    router.push("/Home")
+  }
 
   function OnAccountChangeListener(event) {
     setAccount(event.target.value);
-      }
+  }
 
   function OnPasswordChangeListener(event) {
     setPassword(event.target.value);
-    
-}
+  }
 
   return (
     <>
       <div className="main_container">
         <div className="admin_title">
           <div className="admin">
-            <User/>
+            <User />
           </div>
           <h2>Sign in EStore</h2>
         </div>
@@ -34,10 +37,10 @@ export default function Login() {
             <LinkedinIcon />
           </div>
           <div className="icon">
-            <InstagramIcon/>
+            <InstagramIcon />
           </div>
           <div className="icon">
-            <FacebookIcon/>
+            <FacebookIcon />
           </div>
         </div>
 
@@ -57,10 +60,8 @@ export default function Login() {
 
           <a>Forget your password?</a>
 
-          <div className="check_button">
-            <button className="LoginBtn" >
-              登入
-            </button>
+          <div className="check_button" onClick={() => VerifyUser()}>
+            <button className="LoginBtn">登入</button>
           </div>
         </div>
       </div>
