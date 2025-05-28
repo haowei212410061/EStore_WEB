@@ -2,8 +2,11 @@ import {
   GET_ALL_ORDER,
   GET_ALL_PRODUCT,
   GET_ALL_PRODUCT_WITH_CATEGORY,
+  GET_USER_PROFILE,
 } from "./query";
+import { verfiyConfig } from "./verifyUtils";
 const devUrl = "http://localhost:3000/api/graphql";
+import toast from "react-hot-toast";
 
 /**
  * @function FetchAPIWithVariables - 若查詢需要參數 使用此function
@@ -77,7 +80,6 @@ export async function FetchAllOrder(userid) {
     const response = await FetchAPIWithVariables(devUrl, GET_ALL_ORDER, {
       userid: userid,
     });
-
     return response;
   } catch (error) {
     console.error(`Fail to get all order: ${error.graphQLErrors}`);
@@ -99,5 +101,40 @@ export async function FetchProductWithCategory(variable) {
       `Fail to get all product with ${variable.column}: ${error.graphQLErrors}`
     );
     throw error;
+  }
+}
+
+export async function GetUserProfile(loginResult) {
+  try {
+    if (verfiyConfig.LengthError(loginResult.email)) {
+      toast.error("Email 欄位不可為空");
+      return;
+    } else if (verfiyConfig.LengthError(loginResult.password)) {
+      toast.error("密碼 欄位不可為空");
+      return;
+    } else {
+      const response = await FetchAPIWithVariables(
+        devUrl,
+        GET_USER_PROFILE,
+        loginResult
+      );
+      const isLoginSuccess = !Object.keys(response).includes("errors");
+      
+      if (isLoginSuccess) {
+        toast.success("登入成功")
+        
+        const { jwt, data, status } = response.data.GetUserProfile;
+        localStorage.setItem('userid',data[0].userid)
+        return { token: jwt, userProfile: data[0], statusCode: status };
+      } else {
+        toast.error("帳號密碼錯誤 請重新輸入");
+      }
+    }
+  } catch (error) {
+    console.log(`Fail to login please check your email or password`, error);
+    return {
+      statusCode: 500,
+      errorMessage: "Login failed due to server error",
+    };
   }
 }

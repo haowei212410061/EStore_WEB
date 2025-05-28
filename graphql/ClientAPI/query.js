@@ -1,5 +1,23 @@
 import gql from "graphql-tag";
 
+
+export const GET_USER_PROFILE = `
+  query GetUserProfile($email: String!, $password: String!) {
+  GetUserProfile(email: $email, password: $password) {
+    status
+    message
+    data {
+      userid
+      account
+      email
+      password
+      phone
+    }
+    jwt
+  }
+}
+`
+
 export const GET_ALL_PRODUCT = `
   query GetAllProduct {
     GetAllProduct {

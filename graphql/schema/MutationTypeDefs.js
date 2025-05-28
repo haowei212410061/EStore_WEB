@@ -44,6 +44,7 @@ const UserMutationTypeDefs = gql`
       cartid: String!
       userid: String!
       productid: String!
+      productCount:Int!
     ): CartItemResponse
     UpdateCartItemCount(userid: String!): Int!
     DeleteCartItem(userid: String!): CartItemResponse

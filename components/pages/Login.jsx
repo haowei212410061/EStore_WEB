@@ -4,6 +4,9 @@ import { FetchAllProduct } from "@/graphql/ClientAPI/queryUtils";
 import { LinkedinIcon, InstagramIcon, FacebookIcon, User } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { verfiyConfig } from "@/graphql/ClientAPI/verifyUtils";
+import { GetUserProfile } from "@/graphql/ClientAPI/queryUtils";
+import toast from "react-hot-toast";
 
 export default function Login() {
   const router = useRouter();
@@ -11,7 +14,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
 
   function VerifyUser() {
-    router.push("/Home")
+    router.push("/Home");
   }
 
   function OnAccountChangeListener(event) {
@@ -60,7 +63,20 @@ export default function Login() {
 
           <a>Forget your password?</a>
 
-          <div className="check_button" onClick={() => VerifyUser()}>
+          <div
+            className="check_button"
+            onClick={async () => {
+              const loginResult = {
+                email: account,
+                password: password,
+              };
+              const result = await GetUserProfile(loginResult);
+              if (result?.statusCode === 200) {
+                toast.success("登入成功");
+                router.push("/Home");
+              }
+            }}
+          >
             <button className="LoginBtn">登入</button>
           </div>
         </div>

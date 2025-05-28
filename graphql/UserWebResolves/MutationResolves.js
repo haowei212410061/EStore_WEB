@@ -1,5 +1,4 @@
-
-
+const bcrypt = require('bcrypt')
 export const UserMutationResolves = {
   Mutation: {
     UserSignUp: async (
@@ -13,10 +12,11 @@ export const UserMutationResolves = {
           [email]
         );
 
+        const hashPassword = await bcrypt.hash(password,10)
         if (verifyEmail.rows.length === 0) {
           const SignUpResponse = await db.query(
             `INSERT INTO users (userid,account,email,password,phone) VALUES ($1,$2,$3,$4,$5) RETURNING *`,
-            [userid, account, email, password, phone]
+            [userid, account, email, hashPassword, phone]
           );
           return {
             status: 200,
@@ -63,17 +63,22 @@ export const UserMutationResolves = {
         console.error(`Fail to edit user profile:${error}`);
       }
     },
-    PostCartItem: async (parent, { cartid, userid, productid }, { db }) => {
+    PostCartItem: async (
+      parent,
+      { cartid, userid, productid, productcount },
+      { db }
+    ) => {
       try {
         const response = await db.query(
-          `INSERT INTO cartitem (cartid,userid,productid)values
-            ($1,$2,$3) RETURNING *`,
-          [cartid, userid, productid]
+          `INSERT INTO cartitem (cartid,userid,productid,productCount)values
+            ($1,$2,$3,$4)`,
+          [cartid, userid, productid, productcount]
         );
+        console.log("cart item response:", response);
         return {
           status: 200,
           message: "成功加入購物車",
-          data: response.rows,
+          data: null,
         };
       } catch (error) {
         console.error(`Fail to add cart item :${error}`);

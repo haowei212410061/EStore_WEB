@@ -8,6 +8,7 @@ const poppins = Poppins({
   weight: ["400", "500", "600", "700"], // 可選多種粗細
 });
 import "./globals.css";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 const geistSans = Geist({
@@ -29,6 +30,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${poppins.className} font-sans antialiased`}>
+        <Toaster position="top-center"/>
         <ApolloClientProvider>{children}</ApolloClientProvider>
       </body>
     </html>

@@ -8,6 +8,7 @@ import {
   CartItemResponse,
   Order,
   OrderResponse,
+  UserCartItem,
 } from "./type";
 
 const UserQueryDefs = gql`
@@ -16,6 +17,7 @@ const UserQueryDefs = gql`
   ${Product}
   ${ProductsResponse}
   ${CartItem}
+  ${UserCartItem}
   ${CartItemResponse}
   ${Order}
   ${OrderResponse}

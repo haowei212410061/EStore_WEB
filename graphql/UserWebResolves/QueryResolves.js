@@ -1,39 +1,66 @@
 require("dotenv").config();
 import jwt from "jsonwebtoken";
 import { ApolloError } from "@apollo/server/errors";
+const bcrypt = require("bcrypt");
 
 export const UserQueryResolves = {
   Query: {
     GetUserProfile: async (parent, { email, password }, { db }) => {
       try {
-        const GetUserProfileResponse = await db.query(
-          "SELECT * FROM users WHERE email=$1 AND password=$2",
-          [email, password]
-        );
-        if (GetUserProfileResponse.rows.length === 0) {
+        const user = await db.query("SELECT * FROM users WHERE email=$1", [
+          email,
+        ]);
+        if (user.rows.length === 0) {
           return {
             status: 404,
-            message: "User not found or invalid email or invalid password",
+            message: "Invalid email",
             data: [],
           };
-        } else {
-          const token = jwt.sign(
-            {
-              id: GetUserProfileResponse.rows[0].userid,
-              email: GetUserProfileResponse.rows[0].email,
-            },
-            process.env.PRIVATE_SECRET_KEY,
-            { expiresIn: "2h" }
-          );
+        }
+
+        const result = user.rows[0];
+        console.log(user);
+
+        if (!user) {
           return {
-            status: 200,
-            message: "User login success",
-            data: GetUserProfileResponse.rows[0],
-            jwt: token,
+            status: 404,
+            message: "Invalid email",
+            data: [],
+            jwt: "",
           };
         }
+        const isPassword = await bcrypt.compare(password, result.password);
+
+        if (!isPassword) {
+          return {
+            status: 404,
+            message: "Invalid password",
+            data: [],
+            jwt: "",
+          };
+        }
+        const token = jwt.sign(
+          {
+            id: result.userid,
+            email: result.email,
+          },
+          process.env.PRIVATE_SECRET_KEY,
+          { expiresIn: "2h" }
+        );
+        return {
+          status: 200,
+          message: "User login success",
+          data: [result],
+          jwt: token,
+        };
       } catch (error) {
         console.error(`Fail to GetUserProfile: ${error}`);
+        return {
+          status: 500,
+          message: "Fail to GetUserProfile ",
+          data: [],
+          jwt: "",
+        };
       }
     },
     GetAllProduct: async (parent, args, { db }) => {
@@ -45,7 +72,7 @@ export const UserQueryResolves = {
           data: GetAllProductResponse.rows,
         };
       } catch (error) {
-        console.log(error)
+        console.log(error);
         return {
           status: 500,
           message: "Internal server error while getting all products",
@@ -102,16 +129,42 @@ export const UserQueryResolves = {
       }
     },
 
+    /**
+     *
+     *
+     * @param {string} userid - 系統建立的使用者Id
+     * @returns {object} product 商品物件
+     * @returns {number} productCount 商品被加入購物車的次數
+     */
     GetCartItems: async (parent, { userid }, { db }) => {
       try {
         const GetCartItemsResponse = await db.query(
           `SELECT * FROM cartitem WHERE userid=$1`,
           [userid]
         );
+        const productids = GetCartItemsResponse.rows.map((product) => {
+          return {
+            productid: product.productid,
+            productCount: product.productcount,
+          };
+        });
+
+        const products = await Promise.all(
+          productids.map(async (product) => {
+            const res = await db.query(
+              `SELECT * FROM products WHERE productid=$1`,
+              [String(product.productid)]
+            );
+            res.rows[0]["productcount"] = product.productCount;
+            return res.rows[0];
+          })
+        );
+
+        console.log(products);
         return {
           status: 200,
           message: "Get cart item success",
-          data: GetCartItemsResponse.rows,
+          data: products,
         };
       } catch (error) {
         console.error(`Fail to get cart item :${error}`);

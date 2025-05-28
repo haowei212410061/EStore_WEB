@@ -88,6 +88,9 @@ export function Header() {
             <Link
               href="/"
               className="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-100"
+              onClick={()=>{
+                localStorage.clear()
+              }}
             >
               登出
             </Link>

@@ -35,7 +35,7 @@ export const ProductsResponse = gql`
     type ProductsResponse {
         status:Int!
         message:String!
-        data:[Product]!
+        data:[Product]
     }
 `
 
@@ -44,6 +44,19 @@ export const CartItem = gql`
         cartid:String!
         userid:String!
         productid:String!
+        productcount:Int!
+    }
+`
+export const UserCartItem = gql`
+    type UserCartItem{
+        productid:String!
+        title:String!
+        price:Float!
+        description:String!
+        category:String!
+        image:String!
+        count:Int!
+        productcount:Int!
     }
 `
 
@@ -51,7 +64,7 @@ export const CartItemResponse = gql`
     type CartItemResponse {
         status:Int!
         message:String!
-        data:[CartItem]!
+        data:[UserCartItem]
     }
 `
 

@@ -14,6 +14,7 @@ const MergeTypeDefs = mergeTypeDefs([
   UserWebTypeDefs.OrderResponse,
   UserWebTypeDefs.Payment,
   UserWebTypeDefs.PaymentResponse,
+  UserWebTypeDefs.UserCartItem,
   UserQueryDefs,
   UserMutationTypeDefs
 
