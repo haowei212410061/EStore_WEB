@@ -14,7 +14,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
 
   function VerifyUser() {
-    router.push("/Home");
+    router.push("/");
   }
 
   function OnAccountChangeListener(event) {
@@ -73,7 +73,7 @@ export default function Login() {
               const result = await GetUserProfile(loginResult);
               if (result?.statusCode === 200) {
                 toast.success("登入成功");
-                router.push("/Home");
+                router.push("/");
               }
             }}
           >

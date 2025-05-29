@@ -7,9 +7,23 @@ import { ShoppingCartIcon, User } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useWindowScroll } from "react-use";
 
-export function Header() {
+function getSessionStorage() {
+  const userid = sessionStorage.getItem("userid");
+  const token = sessionStorage.getItem("token");
+  return { userid, token };
+}
+
+export function Header({ setSearchFunc, isHidden ,productList}) {
   const [isScroll, setIsScroll] = useState(false);
   const [isOpenDropDownMenu, SetIsOpenDropDownMenu] = useState(false);
+  const [userId, setUserId] = useState("");
+  const [token, setToken] = useState("");
+
+  useEffect(() => {
+    const { userid, token } = getSessionStorage();
+    setToken(token);
+    setUserId(userid);
+  });
 
   const { y } = useWindowScroll();
   useEffect(() => {
@@ -32,7 +46,7 @@ export function Header() {
           <AvatarImage src={logo.src} alt="Estore Logo" />
         </Avatar>
         <nav className="hidden md:flex space-x-6 text-lg font-medium text-gray-800">
-          <Link href="/Home" className="hover:text-blue-500">
+          <Link href="/" className="hover:text-blue-500">
             Home
           </Link>
           <Link href="/MenClothes" className="hover:text-blue-500">
@@ -47,14 +61,15 @@ export function Header() {
         </nav>
       </div>
       <div className="flex items-center space-x-6">
-        <SearchBox />
+        {isHidden ? <></> : <SearchBox setSearchFunc={setSearchFunc} products={productList} />}
 
-        <button
+        <Link
           aria-label="Shopping Cart"
           className="p-2 text-gray-700 hover:text-blue-600"
+          href={'/CartItem'}
         >
-          <ShoppingCartIcon className="w-6 h-6" />
-        </button>
+          <ShoppingCartIcon  className="w-6 h-6" />
+        </Link>
 
         <button
           aria-label="User Profile"
@@ -86,13 +101,13 @@ export function Header() {
             </Link>
             <div className="border-t" />
             <Link
-              href="/"
+              href="/SignIn"
               className="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-100"
-              onClick={()=>{
-                localStorage.clear()
+              onClick={() => {
+                sessionStorage.clear();
               }}
             >
-              登出
+              {token ? "登出" : "登入"}
             </Link>
           </div>
         </div>

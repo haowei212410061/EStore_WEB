@@ -57,6 +57,7 @@ export const UserCartItem = gql`
         image:String!
         count:Int!
         productcount:Int!
+        size:String!
     }
 `
 
@@ -115,4 +116,6 @@ export const UserResponse = gql`
         data:[User]
     }
 `
+
+
 

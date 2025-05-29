@@ -1,6 +1,5 @@
 import gql from "graphql-tag";
 
-
 export const GET_USER_PROFILE = `
   query GetUserProfile($email: String!, $password: String!) {
   GetUserProfile(email: $email, password: $password) {
@@ -16,7 +15,7 @@ export const GET_USER_PROFILE = `
     jwt
   }
 }
-`
+`;
 
 export const GET_ALL_PRODUCT = `
   query GetAllProduct {
@@ -69,4 +68,24 @@ query GetProductWithCategory($column: String!, $info: String) {
     }
   }
 }
-`
+`;
+
+export const GET_USER_CARTITEM = `
+query GetCartItems($userid: String!) {
+  GetCartItems(userid: $userid) {
+    status
+    message
+    data {
+      productid
+      title
+      price
+      description
+      category
+      image
+      count
+      productcount
+      size
+    }
+  }
+}
+`;

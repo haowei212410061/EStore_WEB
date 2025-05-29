@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt')
+const bcrypt = require("bcrypt");
 export const UserMutationResolves = {
   Mutation: {
     UserSignUp: async (
@@ -12,7 +12,7 @@ export const UserMutationResolves = {
           [email]
         );
 
-        const hashPassword = await bcrypt.hash(password,10)
+        const hashPassword = await bcrypt.hash(password, 10);
         if (verifyEmail.rows.length === 0) {
           const SignUpResponse = await db.query(
             `INSERT INTO users (userid,account,email,password,phone) VALUES ($1,$2,$3,$4,$5) RETURNING *`,
@@ -65,14 +65,14 @@ export const UserMutationResolves = {
     },
     PostCartItem: async (
       parent,
-      { cartid, userid, productid, productcount },
+      { cartid, userid, productid, productcount, size },
       { db }
     ) => {
       try {
         const response = await db.query(
-          `INSERT INTO cartitem (cartid,userid,productid,productCount)values
-            ($1,$2,$3,$4)`,
-          [cartid, userid, productid, productcount]
+          `INSERT INTO cartitem (cartid,userid,productid,productCount,size)values
+            ($1,$2,$3,$4,$5)`,
+          [cartid, userid, productid, productcount, size]
         );
         console.log("cart item response:", response);
         return {
@@ -99,16 +99,16 @@ export const UserMutationResolves = {
         console.error(`fail to update cart item count : ${error}`);
       }
     },
-    DeleteCartItem: async (parent, { userid }, { db }) => {
+    DeleteCartItem: async (parent, { userid, productid, size }, { db }) => {
       try {
         const response = await db.query(
-          `delete from cartitem where userid=$1 returning *`,
-          [userid]
+          `delete from cartitem where userid=$1 AND productid=$2 AND size=$3 returning *`,
+          [userid, productid, size]
         );
         return {
           status: 200,
           message: "已將商品移出購物車",
-          data: response.rows[0],
+          data: null,
         };
       } catch (error) {
         console.error(`fail to delete cart item : ${error}`);

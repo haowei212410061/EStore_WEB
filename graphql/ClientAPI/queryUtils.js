@@ -2,6 +2,7 @@ import {
   GET_ALL_ORDER,
   GET_ALL_PRODUCT,
   GET_ALL_PRODUCT_WITH_CATEGORY,
+  GET_USER_CARTITEM,
   GET_USER_PROFILE,
 } from "./query";
 import { verfiyConfig } from "./verifyUtils";
@@ -119,12 +120,12 @@ export async function GetUserProfile(loginResult) {
         loginResult
       );
       const isLoginSuccess = !Object.keys(response).includes("errors");
-      
+
       if (isLoginSuccess) {
-        toast.success("登入成功")
-        
+        toast.success("登入成功");
         const { jwt, data, status } = response.data.GetUserProfile;
-        localStorage.setItem('userid',data[0].userid)
+        sessionStorage.setItem("userid", data[0].userid);
+        sessionStorage.setItem("token", jwt);
         return { token: jwt, userProfile: data[0], statusCode: status };
       } else {
         toast.error("帳號密碼錯誤 請重新輸入");
@@ -135,6 +136,25 @@ export async function GetUserProfile(loginResult) {
     return {
       statusCode: 500,
       errorMessage: "Login failed due to server error",
+    };
+  }
+}
+
+export async function GetUserCartItem(userid) {
+  try {
+    const response = await FetchAPIWithVariables(
+      devUrl,
+      GET_USER_CARTITEM,
+      userid
+    );
+    const { data, message, status } = response.data.GetCartItems;
+    return { data, message, status };
+
+  } catch (error) {
+    console.log(error);
+    return {
+      statusCode: 500,
+      errorMessage: "Fail to get user cart item",
     };
   }
 }

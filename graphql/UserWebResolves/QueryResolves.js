@@ -131,23 +131,26 @@ export const UserQueryResolves = {
 
     /**
      *
-     *
+     * - 先用GROUP BY將同一個Userid下的 同一個productid + size 合併成一個 並且回傳總商品件數
+     * - 用map取得購物車內的所有商品
      * @param {string} userid - 系統建立的使用者Id
      * @returns {object} product 商品物件
      * @returns {number} productCount 商品被加入購物車的次數
      */
     GetCartItems: async (parent, { userid }, { db }) => {
       try {
-        const GetCartItemsResponse = await db.query(
-          `SELECT * FROM cartitem WHERE userid=$1`,
-          [userid]
-        );
-        const productids = GetCartItemsResponse.rows.map((product) => {
+        const UserCartItems = await db.query(
+          `SELECT userid,productid,size,SUM(productcount) as total_productcount FROM cartitem where userid=$1 GROUP BY userid,productid,size`,[userid]
+        )
+
+        const productids = UserCartItems.rows.map((product) => {
           return {
             productid: product.productid,
-            productCount: product.productcount,
+            productCount: product.total_productcount,
+            size:product.size
           };
         });
+        console.log(productids)
 
         const products = await Promise.all(
           productids.map(async (product) => {
@@ -156,6 +159,7 @@ export const UserQueryResolves = {
               [String(product.productid)]
             );
             res.rows[0]["productcount"] = product.productCount;
+            res.rows[0]["size"] = product.size;
             return res.rows[0];
           })
         );

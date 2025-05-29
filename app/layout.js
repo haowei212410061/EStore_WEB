@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${poppins.className} font-sans antialiased`}>
-        <Toaster position="top-center"/>
+        <Toaster position="top-center" />
         <ApolloClientProvider>{children}</ApolloClientProvider>
       </body>
     </html>
