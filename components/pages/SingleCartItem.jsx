@@ -1,13 +1,20 @@
+import { DeleteSingleCartItem } from "@/graphql/ClientAPI/mutationUtils";
 import Image from "next/image";
+import toast from "react-hot-toast";
+
 export default function ({
   productCard,
   handleChangeFunc,
   productCount,
   uniqueId,
+  userid,
+  deleteCartItemFunc
 }) {
+  
+
   return (
     <>
-      <div className="basis-2/6 flex gap-2 justify-center items-center">
+      <div className="basis-2/7 flex gap-2 justify-center items-center">
         <Image src={productCard.image} alt="商品圖片" width={80} height={80} />
         <div className="productTitle w-[160px] grid text-start">
           <p className="text-m">{productCard.title}</p>
@@ -35,9 +42,19 @@ export default function ({
           </button>
         </div>
       </div>
-      <p className="text-xl ml-20">
+
+      <p className="text-xl basis-1/6">
         {productCard.price * productCount[uniqueId]}
       </p>
+      <div className="block basis-1/8 bg-gray-600 text-white w-[40px] text-center pt-1 h-[35px] rounded-sm hover:bg-gray-400 hover:cursor-pointer">
+        <button
+          onClick={() =>
+            deleteCartItemFunc(userid, productCard.size, productCard.productid)
+          }
+        >
+          刪除
+        </button>
+      </div>
     </>
   );
 }

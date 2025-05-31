@@ -1,15 +1,39 @@
 "use client";
 import { GetUserCartItem } from "@/graphql/ClientAPI/queryUtils";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Image from "next/image";
 import SingleCartItem from "./SingleCartItem";
 import { nanoid } from "nanoid";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { DeleteSingleCartItem } from "@/graphql/ClientAPI/mutationUtils";
+
+import EmptyContent from "../EmptyContent";
 
 export default function CartItem() {
   const [userCartItem, SetUserCartItem] = useState([]);
   const [userId, setUserId] = useState(null);
   const [productCount, SetProductCount] = useState({});
   const [totalPrice, setTotalPrice] = useState(0);
+  const [cartItemSize, SetCartItemSize] = useState(0);
+  const router = useRouter();
+
+  async function deleteCartItem(userid, size, productid) {
+    try {
+      const res = await DeleteSingleCartItem(userid, size, productid);
+
+      const { status, message } = res;
+      if (status === 200) {
+        const updateCartSize = cartItemSize - 1;
+        SetCartItemSize(updateCartSize);
+        toast.success(message);
+      }
+
+      console.log(res);
+    } catch (error) {
+      console.error("fail to delete cart item", error);
+    }
+  }
 
   const handleChange = (productId, type) => {
     SetProductCount((prev) => {
@@ -44,7 +68,7 @@ export default function CartItem() {
       const total = GetTotalPrice(response.data);
       setTotalPrice(total);
     });
-  }, [userId]);
+  }, [userId, cartItemSize]);
 
   /**監聽: 只要增加商品數量 就更改總金額 */
   useEffect(() => {
@@ -52,6 +76,7 @@ export default function CartItem() {
     setTotalPrice(total);
   }, [productCount]);
 
+  /**取得總金額 */
   function GetTotalPrice(products) {
     const total = products.reduce((acc, product) => {
       const id = `${product.productid}_${product.size}`;
@@ -60,10 +85,10 @@ export default function CartItem() {
       return acc + subtotal;
     }, 0);
 
-    return parseFloat(total.toFixed(2))
+    return parseFloat(total.toFixed(2));
   }
   return (
-    <div className="shoppingCart relative w-[70%] ml-40">
+    <div className="shoppingCart relative w-[80%] ml-40">
       <div className="flex justify-between border-b-2 h-[60px]">
         <h1 className="text-4xl mr-2.5">購物車</h1>
         <div className="info flex gap-18">
@@ -78,18 +103,20 @@ export default function CartItem() {
         <p className="basis-1/6 text-l mr-5">尺寸</p>
         <p className="basis-1/6 text-l">數量</p>
         <p className="basis-1/6 text-l">單一商品總金額</p>
+        <p className="basis-1/6 text-l">刪除</p>
       </div>
 
       <div className="cartContainer w-[100%] h-[600px] grid gap-3 overflow-y-auto">
-        {userCartItem.length > 0 &&
-          userCartItem[0].image &&
+        {userCartItem.length > 0 && userCartItem[0].image ? (
           userCartItem.map((product) => {
             return (
               <div
                 key={`${product.productid}_${product.size}`}
-                className="flex items-center border-b py-4"
+                className="flex items-center border-b h-[130px] py-4"
               >
                 <SingleCartItem
+                  deleteCartItemFunc={deleteCartItem}
+                  userid={userId}
                   uniqueId={`${product.productid}_${product.size}`}
                   productCard={product}
                   productCount={productCount}
@@ -97,10 +124,39 @@ export default function CartItem() {
                 />
               </div>
             );
-          })}
+          })
+        ) : (
+          <EmptyContent />
+        )}
       </div>
-
-      <div className="totalPrice">{totalPrice}</div>
+      <div className="w-full flex flex-row-reverse gap-2 mt-3 items-center">
+        <div
+          className={`block bg-red-600 text-white w-[100px] text-center pt-1 h-[35px] rounded-sm hover:bg-red-400 hover:cursor-pointer ${
+            userCartItem.length === 0
+              ? "bg-gray-300 opacity-50 pointer-events-none"
+              : "bg-gray-600 hover:bg-gray-400 cursor-pointer"
+          }`}
+        >
+          <button
+            onClick={() => {
+              if (userCartItem.length > 0) {
+                sessionStorage.setItem(
+                  "userCartItem",
+                  JSON.stringify(userCartItem)
+                );
+                router.push("/CheckOut");
+              } else {
+                toast.error("購物車為空 請先加入商品");
+              }
+            }}
+          >
+            去買單({userCartItem.length})
+          </button>
+        </div>
+        <div className="totalPrice">
+          總金額 <strong className="text-red-500 text-xl">${totalPrice}</strong>
+        </div>
+      </div>
     </div>
   );
 }

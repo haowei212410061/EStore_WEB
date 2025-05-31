@@ -12,7 +12,10 @@ export const UserMutationResolves = {
           [email]
         );
 
+        /**將使用者密碼加密 */
         const hashPassword = await bcrypt.hash(password, 10);
+        
+        /**確認沒有重複的email再新增資料 */
         if (verifyEmail.rows.length === 0) {
           const SignUpResponse = await db.query(
             `INSERT INTO users (userid,account,email,password,phone) VALUES ($1,$2,$3,$4,$5) RETURNING *`,
@@ -114,16 +117,33 @@ export const UserMutationResolves = {
         console.error(`fail to delete cart item : ${error}`);
       }
     },
+    DeleteAllCartItem:async(parent,{userid},{db})=>{
+      try {
+        
+        const response = await db.query(
+          `delete from cartitem where userid=$1 returning * `,
+          [userid]
+        );
+        return {
+          status: 200,
+          message: "已清空購物車",
+          data: [],
+        };
+      } catch (error) {
+        console.error(`fail to add order : ${error}`);
+      }
+    },
     PostOrders: async (
       parent,
-      { orderid, userid, productid, totalprice, status, paymentmethod },
+      { orderid, userid, productid, totalprice, status, paymentmethod ,productlist,address},
       { db }
     ) => {
       try {
+        const jsonString = JSON.stringify(productlist)
         const response = await db.query(
-          `insert into orders (orderid,userid,productid,totalprice,status,paymentmethod)values
-            ($1,$2,$3,$4,$5,$6) returning *`,
-          [orderid, userid, productid, totalprice, status, paymentmethod]
+          `insert into orders (orderid,userid,productid,totalprice,status,paymentmethod,productlist,address)values
+            ($1,$2,$3,$4,$5,$6,$7,$8) returning *`,
+          [orderid, userid, productid, totalprice, status, paymentmethod,jsonString,address]
         );
         return {
           status: 200,
