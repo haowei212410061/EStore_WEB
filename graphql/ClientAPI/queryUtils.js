@@ -1,3 +1,4 @@
+require("dotenv").config();
 import {
   GET_ALL_ORDER,
   GET_ALL_PRODUCT,
@@ -7,8 +8,9 @@ import {
   GET_ORDER_WITH_ORDERID
 } from "./query";
 import { verfiyConfig } from "./verifyUtils";
-const devUrl = "http://localhost:3000/api/graphql";
+const devUrl = process.env.NEXT_PUBLIC_URL;
 import toast from "react-hot-toast";
+
 
 /**
  * @function FetchAPIWithVariables - 若查詢需要參數 使用此function
@@ -68,7 +70,8 @@ export async function FetchAPI(url, graphqlString) {
 
 export async function FetchAllProduct() {
   try {
-    const response = await FetchAPI(devUrl, GET_ALL_PRODUCT);
+    const Url = process.env.NEXT_PUBLIC_URL;
+    const response = await FetchAPI(Url, GET_ALL_PRODUCT);
     const { data } = response.data.GetAllProduct;
     return data;
   } catch (error) {
@@ -79,7 +82,8 @@ export async function FetchAllProduct() {
 
 export async function FetchAllOrder(userid) {
   try {
-    const response = await FetchAPIWithVariables(devUrl, GET_ALL_ORDER, {
+    const Url = process.env.NEXT_PUBLIC_URL;
+    const response = await FetchAPIWithVariables(Url, GET_ALL_ORDER, {
       userid: userid,
     });
     return response;
@@ -91,8 +95,9 @@ export async function FetchAllOrder(userid) {
 
 export async function FetchProductWithCategory(variable) {
   try {
+    const Url = process.env.NEXT_PUBLIC_URL;
     const response = await FetchAPIWithVariables(
-      devUrl,
+      Url,
       GET_ALL_PRODUCT_WITH_CATEGORY,
       variable
     );
@@ -115,8 +120,9 @@ export async function GetUserProfile(loginResult) {
       toast.error("密碼 欄位不可為空");
       return;
     } else {
+      const Url = process.env.NEXT_PUBLIC_URL;
       const response = await FetchAPIWithVariables(
-        devUrl,
+        Url,
         GET_USER_PROFILE,
         loginResult
       );
@@ -143,8 +149,9 @@ export async function GetUserProfile(loginResult) {
 
 export async function GetUserCartItem(userid) {
   try {
+    const Url = process.env.NEXT_PUBLIC_URL;
     const response = await FetchAPIWithVariables(
-      devUrl,
+      Url,
       GET_USER_CARTITEM,
       userid
     );
@@ -161,8 +168,9 @@ export async function GetUserCartItem(userid) {
 
 export async function GetOrderWithOrderId(order) {
   try {
+    const Url = process.env.NEXT_PUBLIC_URL;
     const response = await FetchAPIWithVariables(
-      devUrl,
+      Url,
       GET_ORDER_WITH_ORDERID,
       order
     );
@@ -179,8 +187,9 @@ export async function GetOrderWithOrderId(order) {
 
 export async function GetAllOrder(user) {
   try {
+    const Url = process.env.NEXT_PUBLIC_URL;
     const response = await FetchAPIWithVariables(
-      devUrl,
+      Url,
       GET_ALL_ORDER,
       user
     );

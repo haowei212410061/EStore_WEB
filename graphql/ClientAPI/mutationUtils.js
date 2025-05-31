@@ -1,15 +1,17 @@
+require("dotenv").config();
 import { DELETE_ALL_CART_ITEM, DELETE_SINGLE_CART_ITEM,POST_CART_ITEM, POST_ORDER } from "./mutation";
 import { FetchAPIWithVariables } from "./queryUtils";
 import { verfiyConfig } from "./verifyUtils";
-const devUrl = "http://localhost:3000/api/graphql";
+const devUrl = process.env.NEXT_PUBLIC_URL;
 import toast from "react-hot-toast";
+
 
 
 export async function PostCartItem(cartItem) {
   try {
-    console.log(cartItem);
+    const Url = process.env.NEXT_PUBLIC_URL;
     const response = await FetchAPIWithVariables(
-      devUrl,
+      Url,
       POST_CART_ITEM,
       cartItem
     );
@@ -22,8 +24,8 @@ export async function PostCartItem(cartItem) {
 
 export async function CreateOrder(order) {
   try {
-    console.log(order);
-    const response = await FetchAPIWithVariables(devUrl, POST_ORDER, order);
+    const Url = process.env.NEXT_PUBLIC_URL;
+    const response = await FetchAPIWithVariables(Url, POST_ORDER, order);
     const { message, status, data } = response.data.PostOrders;
     return { message, status, data };
   } catch (error) {
@@ -33,7 +35,8 @@ export async function CreateOrder(order) {
 
 export async function DeleteAllCartItem(userid) {
   try {
-    const response = await FetchAPIWithVariables(devUrl, DELETE_ALL_CART_ITEM, {
+    const Url = process.env.NEXT_PUBLIC_URL;
+    const response = await FetchAPIWithVariables(Url, DELETE_ALL_CART_ITEM, {
       userid: userid,
     });
     const { status, message } = response.data.DeleteAllCartItem;
@@ -46,7 +49,8 @@ export async function DeleteAllCartItem(userid) {
 
 export async function DeleteSingleCartItem(userid, size, productid) {
   try {
-    const response = await FetchAPIWithVariables(devUrl, DELETE_SINGLE_CART_ITEM, {
+    const Url = process.env.NEXT_PUBLIC_URL;
+    const response = await FetchAPIWithVariables(Url, DELETE_SINGLE_CART_ITEM, {
       userid: userid,
       size: size,
       productid: productid,

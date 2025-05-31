@@ -44,7 +44,7 @@ export const UserQueryResolves = {
             id: result.userid,
             email: result.email,
           },
-          process.env.PRIVATE_SECRET_KEY,
+          process.env.NEXT_PUBLIC_SECRET_KEY,
           { expiresIn: "2h" }
         );
         return {

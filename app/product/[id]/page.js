@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import SizeSelector from "@/components/SizeButtons";
 import { FetchProductWithCategory } from "@/graphql/ClientAPI/queryUtils";
 import Image from "next/image";

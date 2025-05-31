@@ -2,13 +2,22 @@
 
 import Image from "next/image";
 import SizeSelector from "@/components/SizeButtons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { PostCartItem } from "@/graphql/ClientAPI/mutationUtils";
 import { nanoid } from "nanoid";
+import { User } from "lucide-react";
 
 export default function ProductClientContainer({ product }) {
   const [selectedSize, setSelectedSize] = useState(null);
+  const [token, SetToken] = useState("");
+
+  useState(()=>{
+    const UserToken = sessionStorage.getItem("token")
+    SetToken(UserToken)
+  },[])
+
+
 
   const handleSizeSelect = (size) => {
     setSelectedSize(size);
@@ -57,7 +66,11 @@ export default function ProductClientContainer({ product }) {
         />
 
         <button
-          className="bg-black w-[300px] mt-5 h-[50px] hover:bg-gray-300 hover:cursor-pointer hover:text-black text-white"
+          className={`bg-black w-[300px] mt-5 h-[50px] hover:bg-gray-300 hover:cursor-pointer hover:text-black text-white ${
+            !token
+              ? "bg-gray-300 opacity-50 pointer-events-none"
+              : "bg-gray-600 hover:bg-gray-400 cursor-pointer"
+          }`}
           onClick={handleAddToCart}
         >
           加入購物車
