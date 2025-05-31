@@ -126,7 +126,7 @@ export default function CartItem() {
             );
           })
         ) : (
-          <EmptyContent />
+          <EmptyContent message={"購物車內目前無商品 在逛逛吧:)"}/>
         )}
       </div>
       <div className="w-full flex flex-row-reverse gap-2 mt-3 items-center">

@@ -34,24 +34,6 @@ export const GET_ALL_PRODUCT = `
     }
   }
 `;
-
-export const GET_ALL_ORDER = `
-  query GetAllOrder($userid: String) {
-    GetAllOrder(userid: $userid) {
-      status
-      message
-      data {
-        orderid
-        paymentmethod
-        productid
-        status
-        totalprice
-        userid
-      }
-    }
-  }
-`;
-
 export const GET_ALL_PRODUCT_WITH_CATEGORY = `
 query GetProductWithCategory($column: String!, $info: String) {
   GetProductWithCategory(column: $column, info: $info) {
@@ -85,6 +67,64 @@ query GetCartItems($userid: String!) {
       count
       productcount
       size
+    }
+  }
+}
+`;
+
+export const GET_ORDER_WITH_ORDERID = `
+query GetOrderWithOrderId($userid: String!, $orderid: String!) {
+  GetOrderWithOrderId(userid: $userid, orderid: $orderid) {
+    status
+    message
+    data {
+      orderid
+      userid
+      totalprice
+      status
+      address
+      paymentmethod
+      productid
+      productlist {
+        productid
+        title
+        price
+        description
+        category
+        image
+        count
+        productcount
+        size
+      }
+    }
+  }
+}
+`;
+
+export const GET_ALL_ORDER = `
+query GetAllOrder($userid: String) {
+  GetAllOrder(userid: $userid) {
+    status
+    message
+    data {
+      orderid
+      userid
+      totalprice
+      status
+      address
+      paymentmethod
+      productid
+      productlist {
+        productid
+        title
+        price
+        description
+        category
+        image
+        count
+        productcount
+        size
+      }
     }
   }
 }

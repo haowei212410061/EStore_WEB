@@ -24,7 +24,7 @@ export default function ProductCard({
         <h3 className="text-sm font-medium line-clamp-2">{ProductTitle}</h3>
         <div className="flex justify-between items-center text-sm">
           <p>NT${ProductPrice}</p>
-          <ShoppingCartIcon className="w-5 h-5 text-gray-600" />
+          <p>★★★★☆</p>
         </div>
       </section>
     </div>

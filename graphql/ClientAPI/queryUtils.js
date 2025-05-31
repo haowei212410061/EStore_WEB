@@ -4,6 +4,7 @@ import {
   GET_ALL_PRODUCT_WITH_CATEGORY,
   GET_USER_CARTITEM,
   GET_USER_PROFILE,
+  GET_ORDER_WITH_ORDERID
 } from "./query";
 import { verfiyConfig } from "./verifyUtils";
 const devUrl = "http://localhost:3000/api/graphql";
@@ -149,12 +150,47 @@ export async function GetUserCartItem(userid) {
     );
     const { data, message, status } = response.data.GetCartItems;
     return { data, message, status };
-
   } catch (error) {
     console.log(error);
     return {
       statusCode: 500,
       errorMessage: "Fail to get user cart item",
+    };
+  }
+}
+
+export async function GetOrderWithOrderId(order) {
+  try {
+    const response = await FetchAPIWithVariables(
+      devUrl,
+      GET_ORDER_WITH_ORDERID,
+      order
+    );
+    const { data, message, status } = response.data.GetOrderWithOrderId;
+    return { data, message, status };
+  } catch (error) {
+    console.log(error);
+    return {
+      statusCode: 500,
+      errorMessage: "Fail to get all order with orderid",
+    };
+  }
+}
+
+export async function GetAllOrder(user) {
+  try {
+    const response = await FetchAPIWithVariables(
+      devUrl,
+      GET_ALL_ORDER,
+      user
+    );
+    const { data, message, status } = response.data.GetAllOrder;
+    return { data, message, status };
+  } catch (error) {
+    console.log(error);
+    return {
+      statusCode: 500,
+      errorMessage: "Fail to get all order",
     };
   }
 }

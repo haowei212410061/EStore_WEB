@@ -95,7 +95,7 @@ export default function CheckOut() {
     const { data, status, message } = res;
     if (status === 200) {
       await DeleteAllCartItem(userId);
-      toast.success("已建立訂單")
+      toast.success(`已建立訂單 訂單編號為${data[0].orderid}`)
       router.push('/Order')
       
     }
@@ -148,7 +148,7 @@ export default function CheckOut() {
     return parseFloat(total.toFixed(2));
   }
   return (
-    <div className="shoppingCart relative w-[70%] ml-40">
+    <div className="shoppingCart relative w-[70%] ml-60">
       <div className="flex justify-between border-b-2 h-[60px]">
         <h1 className="text-4xl mr-2.5">結帳</h1>
       </div>
