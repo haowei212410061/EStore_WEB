@@ -11,6 +11,7 @@
   "dependencies": {
     "@apollo/client": "^3.13.8",
     "@as-integrations/next": "^3.2.0",
+    "@graphql-codegen/cli": "^5.0.6",
     "@graphql-tools/merge": "^9.0.24",
     "@radix-ui/react-avatar": "^1.1.9",
     "@radix-ui/react-navigation-menu": "^1.2.12",
