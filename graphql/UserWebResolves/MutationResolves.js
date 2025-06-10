@@ -12,11 +12,16 @@ export const UserMutationResolves = {
           [email]
         );
 
+        const verifyPhone = await db.query(
+          `SELECT * FROM users WHERE phone=$1`,
+          [phone]
+        );
+
         /**將使用者密碼加密 */
         const hashPassword = await bcrypt.hash(password, 10);
-        
-        /**確認沒有重複的email再新增資料 */
-        if (verifyEmail.rows.length === 0) {
+
+        /**確認沒有重複的email and phone */
+        if (verifyEmail.rows.length === 0 && verifyPhone.rows.length === 0) {
           const SignUpResponse = await db.query(
             `INSERT INTO users (userid,account,email,password,phone) VALUES ($1,$2,$3,$4,$5) RETURNING *`,
             [userid, account, email, hashPassword, phone]
@@ -29,7 +34,7 @@ export const UserMutationResolves = {
         } else {
           return {
             status: 404,
-            message: "This email has already been registered",
+            message: "This email or phone has already been registered",
             data: null,
           };
         }
@@ -51,8 +56,67 @@ export const UserMutationResolves = {
         console.error(`Fail to delete user:${error}`);
       }
     },
-    EditUserProfile: async (parent, { column, info, userid }) => {
+    EditUserProfile: async (parent, { column, info, userid }, { db }) => {
       try {
+        if (column === "password") {
+          const hashPassword = await bcrypt.hash(info, 10);
+          const response = await db.query(
+            `UPDATE users SET password=$1 where userid=$2`,
+            [hashPassword, userid]
+          );
+          return {
+            status: 200,
+            message: "更新帳號資訊成功",
+            data: response.rows,
+          };
+        }
+        if (column === "email") {
+          const verifyEmail = await db.query(
+            `SELECT * FROM users WHERE email=$1`,
+            [info]
+          );
+
+          if (verifyEmail.rows.length === 0) {
+            const response = await db.query(
+              `UPDATE users SET email=$1 where userid=$2`,
+              [info, userid]
+            );
+            return {
+              status: 200,
+              message: "Update user profile success",
+              data: response.rows,
+            };
+          } else {
+            return {
+              status: 404,
+              message: "This email has already been registered",
+              data: null,
+            };
+          }
+        }
+        if (column === "phone") {
+          const verifyPhone = await db.query(
+            `SELECT * FROM users WHERE phone=$1`,
+            [info]
+          );
+          if (verifyPhone.rows.length === 0) {
+            const response = await db.query(
+              `UPDATE users SET phone=$1 where userid=$2`,
+              [info, userid]
+            );
+            return {
+              status: 200,
+              message: "Update user profile success",
+              data: response.rows,
+            };
+          } else {
+            return {
+              status: 404,
+              message: "This email or phone has already been registered",
+              data: null,
+            };
+          }
+        }
         const response = await db.query(
           `UPDATE users SET ${column}=$1 where userid=$2`,
           [info, userid]
@@ -117,9 +181,8 @@ export const UserMutationResolves = {
         console.error(`fail to delete cart item : ${error}`);
       }
     },
-    DeleteAllCartItem:async(parent,{userid},{db})=>{
+    DeleteAllCartItem: async (parent, { userid }, { db }) => {
       try {
-        
         const response = await db.query(
           `delete from cartitem where userid=$1 returning * `,
           [userid]
@@ -135,15 +198,33 @@ export const UserMutationResolves = {
     },
     PostOrders: async (
       parent,
-      { orderid, userid, productid, totalprice, status, paymentmethod ,productlist,address},
+      {
+        orderid,
+        userid,
+        productid,
+        totalprice,
+        status,
+        paymentmethod,
+        productlist,
+        address,
+      },
       { db }
     ) => {
       try {
-        const jsonString = JSON.stringify(productlist)
+        const jsonString = JSON.stringify(productlist);
         const response = await db.query(
           `insert into orders (orderid,userid,productid,totalprice,status,paymentmethod,productlist,address)values
             ($1,$2,$3,$4,$5,$6,$7,$8) returning *`,
-          [orderid, userid, productid, totalprice, status, paymentmethod,jsonString,address]
+          [
+            orderid,
+            userid,
+            productid,
+            totalprice,
+            status,
+            paymentmethod,
+            jsonString,
+            address,
+          ]
         );
         return {
           status: 200,

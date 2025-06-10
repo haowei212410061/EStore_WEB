@@ -24,6 +24,7 @@ const UserQueryDefs = gql`
 
   type Query {
     GetUserProfile(email: String!, password: String!): LoginResponse
+    GetUserProfileWithID(userid:String!):LoginResponse
 
     GetAllProduct:ProductsResponse
     GetProductWithCategory(column:String!, info:String):ProductsResponse!

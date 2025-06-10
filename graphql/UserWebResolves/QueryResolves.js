@@ -63,6 +63,37 @@ export const UserQueryResolves = {
         };
       }
     },
+    GetUserProfileWithID:async (parent, { userid }, { db }) => {
+      try {
+        const user = await db.query("SELECT * FROM users WHERE userid=$1", [
+          userid
+        ]);
+        const result = user.rows;
+        console.log(result);
+        if (user.rows.length === 0) {
+          return {
+            status: 404,
+            message: "Invalid user",
+            data: [],
+            jwt:"--"
+          };
+        }
+        return {
+          status: 200,
+          message: "Get user profile success",
+          data: [result[0]],
+          jwt: "--",
+        };
+      } catch (error) {
+        console.error(`Fail to GetUserProfile: ${error}`);
+        return {
+          status: 500,
+          message: "Fail to GetUserProfile ",
+          data: [],
+          jwt: "--",
+        };
+      }
+    },
     GetAllProduct: async (parent, args, { db }) => {
       try {
         const GetAllProductResponse = await db.query("SELECT * FROM products");

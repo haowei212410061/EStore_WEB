@@ -67,6 +67,38 @@ mutation DeleteAllCartItem($userid: String!) {
 }
 `;
 
+export const EDIT_USER_PROFILE = `
+mutation EditUserProfile($column: String!, $userid: String!, $info: String) {
+  EditUserProfile(column: $column, userid: $userid, info: $info) {
+    status
+    message
+    data {
+      userid
+      account
+      email
+      password
+      phone
+    }
+  }
+}
+`
+
+export const SIGN_UP = `
+mutation UserSignUp($userid: String!, $account: String!, $email: String!, $password: String!, $phone: String!) {
+  UserSignUp(userid: $userid, account: $account, email: $email, password: $password, phone: $phone) {
+    status
+    message
+    data {
+      userid
+      account
+      email
+      password
+      phone
+    }
+  }
+}
+`
+
 export const DELETE_SINGLE_CART_ITEM = `
   mutation DeleteCartItem($userid: String!, $productid: String!, $size: String) {
   DeleteCartItem(userid: $userid, productid: $productid, size: $size) {

@@ -17,6 +17,23 @@ export const GET_USER_PROFILE = `
 }
 `;
 
+export const GET_USER_DETAILS = `
+query GetUserProfileWithID($userid: String!) {
+  GetUserProfileWithID(userid: $userid) {
+    status
+    message
+    data {
+      userid
+      account
+      email
+      password
+      phone
+    }
+    jwt
+  }
+}
+`;
+
 export const GET_ALL_PRODUCT = `
   query GetAllProduct {
     GetAllProduct {
