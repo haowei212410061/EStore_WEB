@@ -19,7 +19,7 @@ export default async function Page() {
     <div className="MenPage w-[100%] h-[100%]">
       <Header isHidden={true}/>
       <div className="ProductSection mt-10 w-full text-center mb-20">
-        <h2 className="w-[1000px] m-auto text-2xl mb-5">女裝 - 熱銷排行榜</h2>
+        <h2 className="w-[1000px] m-auto text-2xl mb-5">Womens Clothes</h2>
         <ProductList productData={products} />
       </div>
       <Footer />

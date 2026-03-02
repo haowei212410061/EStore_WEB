@@ -166,6 +166,20 @@ export const UserMutationResolves = {
         console.error(`fail to update cart item count : ${error}`);
       }
     },
+    UpdatePurchaseQuantityInCart: async (parent, { userid, productid,productcount }, { db }) => {
+      try {
+        const response = await db.query(
+          `update cartitem set productcount=$3 where userid=$1 AND productid=$2 returning *`,
+          [userid, productid,productcount]
+        );
+
+        console.log("update purchase quantity in cart response:", response);
+        return response.rows
+      
+      } catch (error) {
+        console.error(`fail to update purchase quantity in cart : ${error}`);
+      }
+    },
     DeleteCartItem: async (parent, { userid, productid, size }, { db }) => {
       try {
         const response = await db.query(

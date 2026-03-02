@@ -2,7 +2,7 @@
 /*login page css*/
 .main_container {
   display: grid;
-  width: 25%;
+  width: 20%;
   height: 500px;
   justify-content: center;
   align-items: center;
@@ -11,7 +11,7 @@
   box-shadow: 0px 5px 5px 5px rgba(209, 194, 194, 0.147);
   margin: 0 auto;
   position: relative;
-  top: 50px;
+  top: 70px;
 }
 .main_container .admin_title {
   position: relative;

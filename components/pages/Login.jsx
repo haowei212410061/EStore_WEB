@@ -33,10 +33,10 @@ export default function Login() {
           <div className="admin">
             <User />
           </div>
-          <h2>Sign in EStore</h2>
+          <h2>Sign in Demo</h2>
         </div>
 
-        <div className="icons">
+        {/* <div className="icons">
           <div className="icon">
             <LinkedinIcon />
           </div>
@@ -46,7 +46,7 @@ export default function Login() {
           <div className="icon">
             <FacebookIcon />
           </div>
-        </div>
+        </div> */}
 
         <div className="admin_Input">
           <input

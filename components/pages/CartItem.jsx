@@ -6,7 +6,7 @@ import SingleCartItem from "./SingleCartItem";
 import { nanoid } from "nanoid";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { DeleteSingleCartItem } from "@/graphql/ClientAPI/mutationUtils";
+import { DeleteSingleCartItem, UpdatePurchaseQuantityInCart } from "@/graphql/ClientAPI/mutationUtils";
 
 import EmptyContent from "../EmptyContent";
 
@@ -106,7 +106,7 @@ export default function CartItem() {
         <p className="basis-1/6 text-l">刪除</p>
       </div>
 
-      <div className="cartContainer w-[100%] h-[600px] grid gap-3 overflow-y-auto">
+      <div className="cartContainer w-[100%] h-[600px] gap-3 overflow-y-auto">
         {userCartItem.length > 0 && userCartItem[0].image ? (
           userCartItem.map((product) => {
             return (
@@ -126,7 +126,7 @@ export default function CartItem() {
             );
           })
         ) : (
-          <EmptyContent message={"購物車內目前無商品 在逛逛吧:)"}/>
+          <EmptyContent message={"購物車內無商品:)"}/>
         )}
       </div>
       <div className="w-full flex flex-row-reverse gap-2 mt-3 items-center">
@@ -138,12 +138,16 @@ export default function CartItem() {
           }`}
         >
           <button
-            onClick={() => {
+            onClick={async() => {
               if (userCartItem.length > 0) {
                 sessionStorage.setItem(
                   "userCartItem",
                   JSON.stringify(userCartItem)
                 );
+
+                userCartItem.forEach(async(product)=>{
+                  await UpdatePurchaseQuantityInCart(userId, product.productid, Number(productCount[`${product.productid}_${product.size}`]) || 1)
+                })
                 router.push("/CheckOut");
               } else {
                 toast.error("購物車為空 請先加入商品");

@@ -15,11 +15,13 @@ export default function Home() {
   const [isSearchProduct, setProductState] = useState(false);
 
   useEffect(() => {
+    JSON.parse(localStorage.getItem("productList")) ? setProducts(JSON.parse(localStorage.getItem("productList"))) :
     FetchAllProduct().then((res) => {
       console.log(res);
       setProducts(res);
       setProductState(false);
       setSearchProduct([]);
+      localStorage.setItem("productList", JSON.stringify(res));
     });
   }, []);
 
@@ -36,6 +38,8 @@ export default function Home() {
     const result = productlist.filter((item) =>
       item.title.includes(searchData)
     );
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
 
     setSearchProduct(result);
   }
@@ -62,9 +66,7 @@ export default function Home() {
           You Might Also Likes
         </h2>
         <ProductList
-          productData={products
-            .filter((product) => product.category === "mens clothing")
-            .slice(0, 4)}
+          productData={products.filter((product) => product.category === "mens clothing").slice(0, 4)}
         />
       </div>
 

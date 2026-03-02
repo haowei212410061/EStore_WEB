@@ -81,7 +81,7 @@ mutation EditUserProfile($column: String!, $userid: String!, $info: String) {
     }
   }
 }
-`
+`;
 
 export const SIGN_UP = `
 mutation UserSignUp($userid: String!, $account: String!, $email: String!, $password: String!, $phone: String!) {
@@ -97,7 +97,7 @@ mutation UserSignUp($userid: String!, $account: String!, $email: String!, $passw
     }
   }
 }
-`
+`;
 
 export const DELETE_SINGLE_CART_ITEM = `
   mutation DeleteCartItem($userid: String!, $productid: String!, $size: String) {
@@ -115,6 +115,17 @@ export const DELETE_SINGLE_CART_ITEM = `
       productcount
       size
     }
+  }
+}
+`;
+
+export const UPDATE_PURCHASE_QUANTITY_IN_CART = `
+mutation UpdatePurchaseQuantityInCart($userid: String!, $productid: String!,$productcount:Int!) {
+  UpdatePurchaseQuantityInCart(userid: $userid, productid: $productid,productcount:$productcount) {
+      cartid
+      userid  
+      productid
+      productcount
   }
 }
 `;

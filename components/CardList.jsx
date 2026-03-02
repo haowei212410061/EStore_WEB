@@ -16,7 +16,7 @@ export default function ProductList({ productData }) {
           );
         })
       ) : (
-        <h1 className="w-full ml-125 text-4xl text-gray-600">本分類目前無商品</h1>
+        <h1 className="w-full ml-[70%] text-4xl text-gray-600">本分類目前無商品</h1>
       )}
     </div>
   );

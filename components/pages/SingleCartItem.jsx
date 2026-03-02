@@ -44,7 +44,7 @@ export default function ({
       </div>
 
       <p className="text-xl basis-1/6">
-        {productCard.price * productCount[uniqueId]}
+        {parseFloat(productCard.price * productCount[uniqueId]).toFixed(2)}
       </p>
       <div className="block basis-1/8 bg-gray-600 text-white w-[40px] text-center pt-1 h-[35px] rounded-sm hover:bg-gray-400 hover:cursor-pointer">
         <button

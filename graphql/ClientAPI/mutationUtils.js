@@ -6,6 +6,7 @@ import {
   POST_CART_ITEM,
   POST_ORDER,
   SIGN_UP,
+  UPDATE_PURCHASE_QUANTITY_IN_CART,
 } from "./mutation";
 import { FetchAPIWithVariables } from "./queryUtils";
 import { verfiyConfig } from "./verifyUtils";
@@ -18,6 +19,21 @@ export async function PostCartItem(cartItem) {
     const response = await FetchAPIWithVariables(Url, POST_CART_ITEM, cartItem);
     const { message, status } = response.data.PostCartItem;
     return { message, status };
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function UpdatePurchaseQuantityInCart(userid, productid, productcount) {
+  try {
+    const Url = process.env.NEXT_PUBLIC_URL;
+    const response = await FetchAPIWithVariables(
+      Url,
+      UPDATE_PURCHASE_QUANTITY_IN_CART,
+      { userid, productid, productcount },
+    );
+    const data = response.data.UpdatePurchaseQuantityInCart;
+    return data;
   } catch (error) {
     console.log(error);
   }
@@ -90,10 +106,10 @@ export async function EditUserProfile(column, info, userid) {
 
 export async function SignUpUser(signUpResult) {
   try {
-    for(const userInfo in signUpResult){
-      if(signUpResult[userInfo].length === 0){
-        toast.error(`${userInfo}欄位未輸入 請重新輸入`)
-        return
+    for (const userInfo in signUpResult) {
+      if (signUpResult[userInfo].length === 0) {
+        toast.error(`${userInfo}欄位未輸入 請重新輸入`);
+        return;
       }
     }
     const Url = process.env.NEXT_PUBLIC_URL;

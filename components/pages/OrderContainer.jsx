@@ -3,7 +3,6 @@
 import { GetAllOrder } from "@/graphql/ClientAPI/queryUtils";
 import { useEffect, useState } from "react";
 import EmptyContent from "../EmptyContent";
-import Link from "next/link";
 import OrderDetail from "./OrderDetail";
 
 export default function OrderContainer() {
@@ -24,7 +23,7 @@ export default function OrderContainer() {
         <h1 className="text-2xl mr-2.5">訂單一覽</h1>
         <h1 className="text-m text-gray-600">欲查看訂單細節 請點擊訂單編號右側按鈕</h1>
       </div>
-      <div className="cartContainer w-[100%] h-[600px] grid gap-3 overflow-y-auto">
+      <div className="cartContainer w-[100%] h-[600px] overflow-y-auto">
         {productlist.length > 0 ? (
           productlist.map((product) => {
             return (
@@ -38,7 +37,7 @@ export default function OrderContainer() {
             );
           })
         ) : (
-          <EmptyContent message={"目前尚無訂單:)"} />
+          <EmptyContent message={"目前尚無訂單:)"} top={"30%"} />
         )}
       </div>
     </div>

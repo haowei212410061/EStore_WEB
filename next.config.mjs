@@ -15,7 +15,8 @@ const nextConfig = {
       "static.nike.com",
       "lsco.scene7.com",
       "www.gap.com",
-      "wrihsxmyaxruvffboqto.supabase.co"
+      "wrihsxmyaxruvffboqto.supabase.co",
+      "jpmxsjhmvnutxkxhjahk.supabase.co"
     ],
   },
 };
